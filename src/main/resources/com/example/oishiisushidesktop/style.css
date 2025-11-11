@@ -1,0 +1,32 @@
+.botonLateral {
+    -fx-background-color: #FD8663;
+    -fx-border-color: #EF6035;
+    -fx-border-width: 1px;
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
+    -fx-text-fill: white;
+}
+
+.mesaLibre {
+    -fx-background-color: #96DE8F;
+}
+
+.mesaOcupada {
+    -fx-background-color: #FF6F6F;
+}
+
+.mesaPendiente {
+    -fx-background-color: #FFA66F;
+}
+
+.mesaServida {
+    -fx-background-color: #6B6B6B;
+}
+
+.contenedor {
+    -fx-border-color: #8C8B8B;
+    -fx-border-width: 1px;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-background-color: none;
+}
