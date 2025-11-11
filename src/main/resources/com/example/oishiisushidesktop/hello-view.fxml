@@ -11,12 +11,12 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.oishiisushidesktop.HelloController">
    <children>
       <Pane layoutX="378.0" prefHeight="1090.0" prefWidth="1550.0">
          <children>
             <Line endX="-161.0" endY="795.6666259765625" layoutX="161.0" layoutY="285.0" startX="-161.0" startY="-285.0" stroke="#0000001c" strokeWidth="2.0" />
-            <ImageView fitHeight="216.0" fitWidth="162.0" layoutX="370.0" layoutY="471.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="mesaUno" fitHeight="216.0" fitWidth="162.0" layoutX="720.0" layoutY="191.0" pickOnBounds="true" preserveRatio="true" rotate="90.0">
                <image>
                   <Image url="@raw/mesa.png" />
                </image>
@@ -24,7 +24,7 @@
                   <Cursor fx:constant="CLOSED_HAND" />
                </cursor>
             </ImageView>
-            <ImageView fitHeight="216.0" fitWidth="162.0" layoutX="720.0" layoutY="191.0" pickOnBounds="true" preserveRatio="true" rotate="90.0">
+            <ImageView fx:id="mesaDos" fitHeight="216.0" fitWidth="162.0" layoutX="720.0" layoutY="468.0" pickOnBounds="true" preserveRatio="true" rotate="90.0">
                <image>
                   <Image url="@raw/mesa.png" />
                </image>
@@ -32,7 +32,7 @@
                   <Cursor fx:constant="CLOSED_HAND" />
                </cursor>
             </ImageView>
-            <ImageView fitHeight="216.0" fitWidth="162.0" layoutX="720.0" layoutY="468.0" pickOnBounds="true" preserveRatio="true" rotate="90.0">
+            <ImageView fx:id="mesaTres" fitHeight="216.0" fitWidth="162.0" layoutX="723.0" layoutY="746.0" pickOnBounds="true" preserveRatio="true" rotate="90.0">
                <image>
                   <Image url="@raw/mesa.png" />
                </image>
@@ -40,7 +40,7 @@
                   <Cursor fx:constant="CLOSED_HAND" />
                </cursor>
             </ImageView>
-            <ImageView fitHeight="216.0" fitWidth="162.0" layoutX="721.0" layoutY="727.0" pickOnBounds="true" preserveRatio="true" rotate="90.0">
+            <ImageView fx:id="mesaCuatro" fitHeight="216.0" fitWidth="162.0" layoutX="370.0" layoutY="471.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@raw/mesa.png" />
                </image>
@@ -48,7 +48,7 @@
                   <Cursor fx:constant="CLOSED_HAND" />
                </cursor>
             </ImageView>
-            <ImageView fitHeight="216.0" fitWidth="162.0" layoutX="1071.0" layoutY="461.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="mesaCinco" fitHeight="216.0" fitWidth="162.0" layoutX="1071.0" layoutY="461.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@raw/mesa.png" />
                </image>
@@ -94,7 +94,7 @@
                   <Font name="Poppins Regular" size="46.0" />
                </font>
             </Text>
-            <Text fill="#fcfcfc" layoutX="790.0" layoutY="850.0" strokeType="OUTSIDE" strokeWidth="0.0" text="3">
+            <Text fill="#fcfcfc" layoutX="792.0" layoutY="869.0" strokeType="OUTSIDE" strokeWidth="0.0" text="3">
                <font>
                   <Font name="Poppins Regular" size="46.0" />
                </font>
@@ -109,13 +109,33 @@
                   <Font name="Poppins Regular" size="46.0" />
                </font>
             </Text>
+            <Pane fx:id="bordeMesaUno" layoutX="664.0" layoutY="179.0" prefHeight="237.0" prefWidth="277.0" stylesheets="@style.css">
+               <cursor>
+                  <Cursor fx:constant="CLOSED_HAND" />
+               </cursor></Pane>
+            <Pane fx:id="bordeMesaDos" layoutX="664.0" layoutY="456.0" prefHeight="237.0" prefWidth="277.0" stylesheets="@style.css">
+               <cursor>
+                  <Cursor fx:constant="CLOSED_HAND" />
+               </cursor></Pane>
+            <Pane fx:id="bordeMesaTres" layoutX="664.0" layoutY="736.0" prefHeight="237.0" prefWidth="277.0" stylesheets="@style.css">
+               <cursor>
+                  <Cursor fx:constant="CLOSED_HAND" />
+               </cursor></Pane>
+            <Pane fx:id="bordeMesaCuatro" layoutX="312.0" layoutY="461.0" prefHeight="237.0" prefWidth="277.0" rotate="90.0" stylesheets="@style.css">
+               <cursor>
+                  <Cursor fx:constant="CLOSED_HAND" />
+               </cursor></Pane>
+            <Pane fx:id="bordeMesaCinco" layoutX="1013.0" layoutY="451.0" prefHeight="237.0" prefWidth="277.0" rotate="90.0" stylesheets="@style.css">
+               <cursor>
+                  <Cursor fx:constant="CLOSED_HAND" />
+               </cursor></Pane>
          </children></Pane>
       <ImageView fitHeight="250.0" fitWidth="260.0" layoutX="55.0" layoutY="69.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@raw/logo.png" />
          </image>
       </ImageView>
-      <Button layoutX="71.0" layoutY="405.0" mnemonicParsing="false" prefHeight="76.0" prefWidth="227.0" styleClass="botonLateral" stylesheets="@style.css" text="Marcar como servida">
+      <Button fx:id="botonMesaServida" layoutX="71.0" layoutY="405.0" mnemonicParsing="false" prefHeight="76.0" prefWidth="227.0" styleClass="botonLateral" stylesheets="@style.css" text="Marcar como servida">
          <font>
             <Font name="Poppins Regular" size="18.0" />
          </font>
@@ -123,7 +143,7 @@
             <Cursor fx:constant="CLOSED_HAND" />
          </cursor>
       </Button>
-      <Button layoutX="71.0" layoutY="517.0" mnemonicParsing="false" prefHeight="76.0" prefWidth="227.0" styleClass="botonLateral" stylesheets="@style.css" text="Ver Comanda">
+      <Button fx:id="botonVerComanda" layoutX="71.0" layoutY="517.0" mnemonicParsing="false" prefHeight="76.0" prefWidth="227.0" styleClass="botonLateral" stylesheets="@style.css" text="Ver Comanda">
          <font>
             <Font size="18.0" />
          </font>
@@ -131,7 +151,7 @@
             <Cursor fx:constant="CLOSED_HAND" />
          </cursor>
       </Button>
-      <Button layoutX="71.0" layoutY="625.0" mnemonicParsing="false" prefHeight="76.0" prefWidth="227.0" styleClass="botonLateral" stylesheets="@style.css" text="Ver Comanda">
+      <Button fx:id="botonMesaVacia" layoutX="71.0" layoutY="625.0" mnemonicParsing="false" prefHeight="76.0" prefWidth="227.0" styleClass="botonLateral" stylesheets="@style.css" text="Marcar como vacia">
          <font>
             <Font size="18.0" />
          </font>
