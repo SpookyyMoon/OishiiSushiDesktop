@@ -6,10 +6,7 @@ import com.example.oishiisushidesktop.entidades.Comandas;
 import com.example.oishiisushidesktop.entidades.Mesas;
 import com.example.oishiisushidesktop.entidades.Platos;
 import retrofit2.Call;
-import retrofit2.http.Body;
-import retrofit2.http.GET;
-import retrofit2.http.PUT;
-import retrofit2.http.Path;
+import retrofit2.http.*;
 
 public interface ApiService {
     @GET("platos")
@@ -23,4 +20,8 @@ public interface ApiService {
 
     @PUT("mesas/{numeroMesa}")
     Call<Mesas> updateMesas(@Path("numeroMesa") int numeroMesa, @Body Mesas mesa);
+
+    @POST("comandas")
+    Call<Comandas> createComanda(@Body Comandas comanda);
+
 }

@@ -28,51 +28,11 @@ public class HelloController implements Initializable, Callback<List<Mesas>> {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         Call<List<Mesas>> call = ApiAdapter.getApiService().getMesas();
         call.enqueue(this);
-
-        bordeMesaUno.setPickOnBounds(true);
-        bordeMesaUno.setOnMouseClicked(Event -> {
-            bordeMesaUno.getStyleClass().add("mesaSeleccionada");
-            bordeMesaDos.getStyleClass().clear();
-            bordeMesaTres.getStyleClass().clear();
-            bordeMesaCuatro.getStyleClass().clear();
-            bordeMesaCinco.getStyleClass().clear();
-            mesaSeleccionada = listaMesas.getFirst();
-        });
-        bordeMesaDos.setOnMouseClicked(Event -> {
-            bordeMesaDos.getStyleClass().add("mesaSeleccionada");
-            bordeMesaUno.getStyleClass().clear();
-            bordeMesaTres.getStyleClass().clear();
-            bordeMesaCuatro.getStyleClass().clear();
-            bordeMesaCinco.getStyleClass().clear();
-            mesaSeleccionada = listaMesas.get(1);
-        });
-        bordeMesaTres.setOnMouseClicked(Event -> {
-            bordeMesaTres.getStyleClass().add("mesaSeleccionada");
-            bordeMesaUno.getStyleClass().clear();
-            bordeMesaDos.getStyleClass().clear();
-            bordeMesaCuatro.getStyleClass().clear();
-            bordeMesaCinco.getStyleClass().clear();
-            mesaSeleccionada = listaMesas.get(2);
-        });
-        bordeMesaCuatro.setOnMouseClicked(Event -> {
-            bordeMesaCuatro.getStyleClass().add("mesaSeleccionada");
-            bordeMesaUno.getStyleClass().clear();
-            bordeMesaDos.getStyleClass().clear();
-            bordeMesaTres.getStyleClass().clear();
-            bordeMesaCinco.getStyleClass().clear();
-            mesaSeleccionada = listaMesas.get(3);
-        });
-        bordeMesaCinco.setOnMouseClicked(Event -> {
-            bordeMesaCinco.getStyleClass().add("mesaSeleccionada");
-            bordeMesaUno.getStyleClass().clear();
-            bordeMesaDos.getStyleClass().clear();
-            bordeMesaTres.getStyleClass().clear();
-            bordeMesaCuatro.getStyleClass().clear();
-            mesaSeleccionada = listaMesas.get(4);
-        });
     }
 
     @FXML public void marcarMesaServida() {
+        if (mesaSeleccionada == null) return;
+
         Image mesaServidaImagen = new Image(getClass().getResourceAsStream("/com/example/oishiisushidesktop/raw/mesaServida.png"));
         switch (mesaSeleccionada.numeroMesa) {
             case 1:
@@ -151,15 +111,66 @@ public class HelloController implements Initializable, Callback<List<Mesas>> {
             if (listaMesas != null && !listaMesas.isEmpty()) {
                 System.out.println(("onResponse mesas: " + "Tamaño de la lista de mesas -> " + listaMesas.size()));
             }
-            for (int i = 0; i < listaMesas.size(); i++) {
-                if(listaMesas.get(i).ocupadaMesa == true ) {
-                    marcarMesaOcupada(listaMesas.get(i));
+
+            for (Mesas mesa : listaMesas) {
+                if (mesa.ocupadaMesa) {
+                    marcarMesaOcupada(mesa);
                 }
-                else {
-                    marcarMesaVacia(listaMesas.get(i));
+                else{
+                    marcarMesaVacia(mesa);
                 }
             }
+
+            bordeMesaUno.setPickOnBounds(true);
+            bordeMesaUno.setOnMouseClicked(mouseEvent -> {
+                seleccionMesa(0);
+            });
+            bordeMesaDos.setPickOnBounds(true);
+            bordeMesaDos.setOnMouseClicked(mouseEvent -> {
+                seleccionMesa(1);
+            });
+            bordeMesaTres.setPickOnBounds(true);
+            bordeMesaTres.setOnMouseClicked(mouseEvent -> {
+                seleccionMesa(2);
+            });
+            bordeMesaCuatro.setPickOnBounds(true);
+            bordeMesaCuatro.setOnMouseClicked(mouseEvent -> {
+                seleccionMesa(3);
+            });
+            bordeMesaCinco.setPickOnBounds(true);
+            bordeMesaCinco.setOnMouseClicked(mouseEvent -> {
+                seleccionMesa(4);
+            });
         }
+    }
+
+    public void seleccionMesa(int mesaSeleccion) {
+        bordeMesaUno.getStyleClass().remove("mesaSeleccionada");
+        bordeMesaDos.getStyleClass().remove("mesaSeleccionada");
+        bordeMesaTres.getStyleClass().remove("mesaSeleccionada");
+        bordeMesaCuatro.getStyleClass().remove("mesaSeleccionada");
+        bordeMesaCinco.getStyleClass().remove("mesaSeleccionada");
+
+        switch (mesaSeleccion) {
+            case 0:
+                bordeMesaUno.getStyleClass().add("mesaSeleccionada");
+                break;
+            case 1:
+                bordeMesaDos.getStyleClass().add("mesaSeleccionada");
+                break;
+            case 2:
+                bordeMesaTres.getStyleClass().add("mesaSeleccionada");
+                break;
+            case 3:
+                bordeMesaCuatro.getStyleClass().add("mesaSeleccionada");
+                break;
+            case 4:
+                bordeMesaCinco.getStyleClass().add("mesaSeleccionada");
+                break;
+
+        }
+
+        mesaSeleccionada = listaMesas.get(mesaSeleccion);
     }
 
     @Override
