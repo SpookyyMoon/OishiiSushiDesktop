@@ -18,7 +18,7 @@
             <Line endX="-161.0" endY="795.6666259765625" layoutX="161.0" layoutY="285.0" startX="-161.0" startY="-285.0" stroke="#0000001c" strokeWidth="2.0" />
             <ImageView fx:id="mesaUno" fitHeight="216.0" fitWidth="162.0" layoutX="720.0" layoutY="191.0" pickOnBounds="true" preserveRatio="true" rotate="90.0">
                <image>
-                  <Image url="@raw/mesa.png" />
+                  <Image url="@raw/mesaPendiente.png" />
                </image>
                <cursor>
                   <Cursor fx:constant="CLOSED_HAND" />
@@ -26,7 +26,7 @@
             </ImageView>
             <ImageView fx:id="mesaDos" fitHeight="216.0" fitWidth="162.0" layoutX="720.0" layoutY="468.0" pickOnBounds="true" preserveRatio="true" rotate="90.0">
                <image>
-                  <Image url="@raw/mesa.png" />
+                  <Image url="@raw/mesaPendiente.png" />
                </image>
                <cursor>
                   <Cursor fx:constant="CLOSED_HAND" />
@@ -34,7 +34,7 @@
             </ImageView>
             <ImageView fx:id="mesaTres" fitHeight="216.0" fitWidth="162.0" layoutX="723.0" layoutY="746.0" pickOnBounds="true" preserveRatio="true" rotate="90.0">
                <image>
-                  <Image url="@raw/mesa.png" />
+                  <Image url="@raw/mesaPendiente.png" />
                </image>
                <cursor>
                   <Cursor fx:constant="CLOSED_HAND" />
@@ -42,7 +42,7 @@
             </ImageView>
             <ImageView fx:id="mesaCuatro" fitHeight="216.0" fitWidth="162.0" layoutX="370.0" layoutY="471.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@raw/mesa.png" />
+                  <Image url="@raw/mesaPendiente.png" />
                </image>
                <cursor>
                   <Cursor fx:constant="CLOSED_HAND" />
@@ -50,7 +50,7 @@
             </ImageView>
             <ImageView fx:id="mesaCinco" fitHeight="216.0" fitWidth="162.0" layoutX="1071.0" layoutY="461.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@raw/mesa.png" />
+                  <Image url="@raw/mesaPendiente.png" />
                </image>
                <cursor>
                   <Cursor fx:constant="CLOSED_HAND" />
@@ -135,7 +135,7 @@
             <Image url="@raw/logo.png" />
          </image>
       </ImageView>
-      <Button fx:id="botonMesaServida" layoutX="71.0" layoutY="405.0" mnemonicParsing="false" prefHeight="76.0" prefWidth="227.0" styleClass="botonLateral" stylesheets="@style.css" text="Marcar como servida">
+      <Button fx:id="botonMesaServida" layoutX="71.0" layoutY="405.0" mnemonicParsing="false" onAction="#marcarMesaServida" prefHeight="76.0" prefWidth="227.0" styleClass="botonLateral" stylesheets="@style.css" text="Marcar como servida">
          <font>
             <Font name="Poppins Regular" size="18.0" />
          </font>
@@ -151,7 +151,7 @@
             <Cursor fx:constant="CLOSED_HAND" />
          </cursor>
       </Button>
-      <Button fx:id="botonMesaVacia" layoutX="71.0" layoutY="625.0" mnemonicParsing="false" prefHeight="76.0" prefWidth="227.0" styleClass="botonLateral" stylesheets="@style.css" text="Marcar como vacia">
+      <Button fx:id="botonMesaVacia" layoutX="71.0" layoutY="625.0" mnemonicParsing="false" onAction="#marcarMesaVacia" prefHeight="76.0" prefWidth="227.0" styleClass="botonLateral" stylesheets="@style.css" text="Marcar como vacia">
          <font>
             <Font size="18.0" />
          </font>
