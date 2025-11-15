@@ -11,16 +11,16 @@ import javafx.scene.layout.Pane;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
+
 public class HelloController implements Initializable, Callback<List<Mesas>> {
     @FXML
-    ImageView mesaUno, mesaDos, mesaTres, mesaCuatro, mesaCinco, botonCerrarComanda;
+    ImageView mesaUno, mesaDos, mesaTres, mesaCuatro, mesaCinco, botonCerrarComanda,botonCerrarAlertaMesaServida;
     @FXML
-    Pane bordeMesaUno, bordeMesaDos, bordeMesaTres, bordeMesaCuatro, bordeMesaCinco, panelOscurecer, panelComanda;
+    Pane bordeMesaUno, bordeMesaDos, bordeMesaTres, bordeMesaCuatro, bordeMesaCinco, panelOscurecer, panelComanda, alertaMesaServida;
 
     List<Mesas> listaMesas;
     Mesas mesaSeleccionada;
@@ -30,49 +30,28 @@ public class HelloController implements Initializable, Callback<List<Mesas>> {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         Call<List<Mesas>> call = ApiAdapter.getApiService().getMesas();
         call.enqueue(this);
+
+        botonCerrarAlertaMesaServida.setOnMouseClicked(mouseEvent -> {
+            panelOscurecer.setVisible(false);
+            alertaMesaServida.setVisible(false);
+        });
+
+        botonCerrarComanda.setOnMouseClicked(mouseEvent -> {
+            panelOscurecer.setVisible(false);
+            panelComanda.setVisible(false);
+        });
     }
 
     @FXML public void marcarMesaServida() {
-        if (mesaSeleccionada == null) return;
-        if (mesaSeleccionada.ocupadaMesa && !mesaSeleccionada.comandasMesa.isEmpty() && !mesaSeleccionada.comandasMesa.getLast().atendidaComanda) {
-            Image mesaServidaImagen = new Image(getClass().getResourceAsStream("/com/example/oishiisushidesktop/raw/mesaServida.png"));
-            switch (mesaSeleccionada.numeroMesa) {
-                case 1:
-                    mesaUno.setImage(mesaServidaImagen);
-                    break;
-                case 2:
-                    mesaDos.setImage(mesaServidaImagen);
-                    break;
-                case 3:
-                    mesaTres.setImage(mesaServidaImagen);
-                    break;
-                case 4:
-                    mesaCuatro.setImage(mesaServidaImagen);
-                    break;
-                case 5:
-                    mesaCinco.setImage(mesaServidaImagen);
-                    break;
-                default:
-                    break;
-            }
-        }
+        comprobarComandaPendiente(mesaSeleccionada);
     }
 
     @FXML public void verComandaMesa() {
         panelOscurecer.setVisible(true);
         panelComanda.setVisible(true);
-        panelOscurecer.toFront();
-        panelComanda.toFront();
-        botonCerrarComanda.setOnMouseClicked(mouseEvent -> {
-            panelOscurecer.setVisible(false);
-            panelComanda.setVisible(false);
-            panelOscurecer.toBack();
-            panelComanda.toBack();
-        });
-
     }
 
-    @FXML public void marcarMesaVacia(Mesas mesa) {
+    public void marcarMesaVacia(Mesas mesa) {
         Image mesaVaciaImagen = new Image(getClass().getResourceAsStream("/com/example/oishiisushidesktop/raw/mesaLibre.png"));
         switch (mesa.numeroMesa) {
             case 1:
@@ -89,6 +68,29 @@ public class HelloController implements Initializable, Callback<List<Mesas>> {
                 break;
             case 5:
                 mesaCinco.setImage(mesaVaciaImagen);
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void marcarMesaPendiente(Mesas mesa) {
+        Image mesaPendienteImagen = new Image(getClass().getResourceAsStream("/com/example/oishiisushidesktop/raw/mesaPendiente.png"));
+        switch (mesa.numeroMesa) {
+            case 1:
+                mesaUno.setImage(mesaPendienteImagen);
+                break;
+            case 2:
+                mesaDos.setImage(mesaPendienteImagen);
+                break;
+            case 3:
+                mesaTres.setImage(mesaPendienteImagen);
+                break;
+            case 4:
+                mesaCuatro.setImage(mesaPendienteImagen);
+                break;
+            case 5:
+                mesaCinco.setImage(mesaPendienteImagen);
                 break;
             default:
                 break;
@@ -147,6 +149,64 @@ public class HelloController implements Initializable, Callback<List<Mesas>> {
         mesaSeleccionada = listaMesas.get(mesaSeleccion);
     }
 
+    private void marcarComoServida(Mesas mesa) {
+        Image mesaServidaImagen = new Image(
+                getClass().getResourceAsStream("/com/example/oishiisushidesktop/raw/mesaServida.png")
+        );
+
+        switch (mesa.numeroMesa) {
+            case 1:
+                mesaUno.setImage(mesaServidaImagen);
+                break;
+            case 2:
+                mesaDos.setImage(mesaServidaImagen);
+                break;
+            case 3:
+                mesaTres.setImage(mesaServidaImagen);
+                break;
+
+            case 4:
+                mesaCuatro.setImage(mesaServidaImagen);
+                break;
+            case 5:
+                mesaCinco.setImage(mesaServidaImagen);
+                break;
+        }
+    }
+
+    private void comprobarComandaPendiente(Mesas mesa) {
+        ApiAdapter.getApiService().getComandas().enqueue(new Callback<List<Comandas>>() {
+            @Override
+            public void onResponse(Call<List<Comandas>> call, Response<List<Comandas>> response) {
+                if (response.isSuccessful()) {
+                    boolean comandaPendiente = false;
+
+                    for (Comandas c : response.body()) {
+                        if (c.numeroMesa == mesa.numeroMesa && !c.atendidaComanda) {
+                            comandaPendiente = true;
+                            break;
+                        }
+                    }
+
+                    if (comandaPendiente) {
+                        marcarComoServida(mesa);
+                    } else {
+                        mostrarAlertaSinPedidos();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Comandas>> call, Throwable t) {
+            }
+        });
+    }
+
+    private void mostrarAlertaSinPedidos() {
+        panelOscurecer.setVisible(true);
+        alertaMesaServida.setVisible(true);
+    }
+
     @Override
     public void onResponse(Call<List<Mesas>> call, Response<List<Mesas>> response) {
         if (response.isSuccessful()) {
@@ -163,6 +223,39 @@ public class HelloController implements Initializable, Callback<List<Mesas>> {
                     marcarMesaVacia(mesa);
                 }
             }
+
+            ApiAdapter.getApiService().getComandas().enqueue(new Callback<List<Comandas>>() {
+                @Override
+                public void onResponse(Call<List<Comandas>> call, Response<List<Comandas>> responseComandas) {
+                    if (!responseComandas.isSuccessful() || responseComandas.body() == null) return;
+
+                    listaComandas = responseComandas.body();
+
+                    for (Mesas mesa : listaMesas) {
+                        if (mesa.ocupadaMesa) {
+                            boolean pendiente = false;
+                            for (Comandas comanda : listaComandas) {
+                                if (comanda.numeroMesa == mesa.numeroMesa && !comanda.atendidaComanda) {
+                                    pendiente = true;
+                                    break;
+                                }
+                            }
+
+                            if (pendiente) {
+                                marcarMesaPendiente(mesa);
+                            } else {
+                                marcarMesaOcupada(mesa);
+                            }
+                        } else {
+                            marcarMesaVacia(mesa);
+                        }
+                    }
+                }
+
+                @Override
+                    public void onFailure(Call<List<Comandas>> call, Throwable throwable) {
+                }
+            });
 
             bordeMesaUno.setPickOnBounds(true);
             bordeMesaUno.setOnMouseClicked(mouseEvent -> {
