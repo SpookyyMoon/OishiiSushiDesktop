@@ -24,3 +24,14 @@
     -fx-border-width: 2px;
     -fx-border-radius: 20px;
 }
+
+.panelComanda {
+    -fx-border-color: #FF9C80;
+    -fx-background-color: white;
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
+}
+
+.oscurecer {
+    -fx-background-color: rgba(0, 0, 0, 0.5);
+}

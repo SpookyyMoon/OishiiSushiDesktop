@@ -1,6 +1,7 @@
 package com.example.oishiisushidesktop;
 
 import com.example.oishiisushidesktop.adaptadores.ApiAdapter;
+import com.example.oishiisushidesktop.entidades.Comandas;
 import com.example.oishiisushidesktop.entidades.Mesas;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -17,12 +18,13 @@ import java.util.ResourceBundle;
 
 public class HelloController implements Initializable, Callback<List<Mesas>> {
     @FXML
-    ImageView mesaUno, mesaDos, mesaTres, mesaCuatro, mesaCinco;
+    ImageView mesaUno, mesaDos, mesaTres, mesaCuatro, mesaCinco, botonCerrarComanda;
     @FXML
-    Pane bordeMesaUno, bordeMesaDos, bordeMesaTres, bordeMesaCuatro, bordeMesaCinco;
+    Pane bordeMesaUno, bordeMesaDos, bordeMesaTres, bordeMesaCuatro, bordeMesaCinco, panelOscurecer, panelComanda;
 
     List<Mesas> listaMesas;
     Mesas mesaSeleccionada;
+    List<Comandas> listaComandas;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -32,23 +34,61 @@ public class HelloController implements Initializable, Callback<List<Mesas>> {
 
     @FXML public void marcarMesaServida() {
         if (mesaSeleccionada == null) return;
+        if (mesaSeleccionada.ocupadaMesa && !mesaSeleccionada.comandasMesa.isEmpty() && !mesaSeleccionada.comandasMesa.getLast().atendidaComanda) {
+            Image mesaServidaImagen = new Image(getClass().getResourceAsStream("/com/example/oishiisushidesktop/raw/mesaServida.png"));
+            switch (mesaSeleccionada.numeroMesa) {
+                case 1:
+                    mesaUno.setImage(mesaServidaImagen);
+                    break;
+                case 2:
+                    mesaDos.setImage(mesaServidaImagen);
+                    break;
+                case 3:
+                    mesaTres.setImage(mesaServidaImagen);
+                    break;
+                case 4:
+                    mesaCuatro.setImage(mesaServidaImagen);
+                    break;
+                case 5:
+                    mesaCinco.setImage(mesaServidaImagen);
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
 
-        Image mesaServidaImagen = new Image(getClass().getResourceAsStream("/com/example/oishiisushidesktop/raw/mesaServida.png"));
-        switch (mesaSeleccionada.numeroMesa) {
+    @FXML public void verComandaMesa() {
+        panelOscurecer.setVisible(true);
+        panelComanda.setVisible(true);
+        panelOscurecer.toFront();
+        panelComanda.toFront();
+        botonCerrarComanda.setOnMouseClicked(mouseEvent -> {
+            panelOscurecer.setVisible(false);
+            panelComanda.setVisible(false);
+            panelOscurecer.toBack();
+            panelComanda.toBack();
+        });
+
+    }
+
+    @FXML public void marcarMesaVacia(Mesas mesa) {
+        Image mesaVaciaImagen = new Image(getClass().getResourceAsStream("/com/example/oishiisushidesktop/raw/mesaLibre.png"));
+        switch (mesa.numeroMesa) {
             case 1:
-                mesaUno.setImage(mesaServidaImagen);
+                mesaUno.setImage(mesaVaciaImagen);
                 break;
             case 2:
-                mesaDos.setImage(mesaServidaImagen);
+                mesaDos.setImage(mesaVaciaImagen);
                 break;
             case 3:
-                mesaTres.setImage(mesaServidaImagen);
+                mesaTres.setImage(mesaVaciaImagen);
                 break;
             case 4:
-                mesaCuatro.setImage(mesaServidaImagen);
+                mesaCuatro.setImage(mesaVaciaImagen);
                 break;
             case 5:
-                mesaCinco.setImage(mesaServidaImagen);
+                mesaCinco.setImage(mesaVaciaImagen);
                 break;
             default:
                 break;
@@ -78,30 +118,33 @@ public class HelloController implements Initializable, Callback<List<Mesas>> {
         }
     }
 
-    @FXML public void verComandaMesa() {
-    }
+    public void seleccionMesa(int mesaSeleccion) {
+        bordeMesaUno.getStyleClass().remove("mesaSeleccionada");
+        bordeMesaDos.getStyleClass().remove("mesaSeleccionada");
+        bordeMesaTres.getStyleClass().remove("mesaSeleccionada");
+        bordeMesaCuatro.getStyleClass().remove("mesaSeleccionada");
+        bordeMesaCinco.getStyleClass().remove("mesaSeleccionada");
 
-    @FXML public void marcarMesaVacia(Mesas mesa) {
-        Image mesaVaciaImagen = new Image(getClass().getResourceAsStream("/com/example/oishiisushidesktop/raw/mesaLibre.png"));
-        switch (mesa.numeroMesa) {
+        switch (mesaSeleccion) {
+            case 0:
+                bordeMesaUno.getStyleClass().add("mesaSeleccionada");
+                break;
             case 1:
-                mesaUno.setImage(mesaVaciaImagen);
+                bordeMesaDos.getStyleClass().add("mesaSeleccionada");
                 break;
             case 2:
-                mesaDos.setImage(mesaVaciaImagen);
+                bordeMesaTres.getStyleClass().add("mesaSeleccionada");
                 break;
             case 3:
-                mesaTres.setImage(mesaVaciaImagen);
+                bordeMesaCuatro.getStyleClass().add("mesaSeleccionada");
                 break;
             case 4:
-                mesaCuatro.setImage(mesaVaciaImagen);
+                bordeMesaCinco.getStyleClass().add("mesaSeleccionada");
                 break;
-            case 5:
-                mesaCinco.setImage(mesaVaciaImagen);
-                break;
-            default:
-                break;
+
         }
+
+        mesaSeleccionada = listaMesas.get(mesaSeleccion);
     }
 
     @Override
@@ -142,35 +185,6 @@ public class HelloController implements Initializable, Callback<List<Mesas>> {
                 seleccionMesa(4);
             });
         }
-    }
-
-    public void seleccionMesa(int mesaSeleccion) {
-        bordeMesaUno.getStyleClass().remove("mesaSeleccionada");
-        bordeMesaDos.getStyleClass().remove("mesaSeleccionada");
-        bordeMesaTres.getStyleClass().remove("mesaSeleccionada");
-        bordeMesaCuatro.getStyleClass().remove("mesaSeleccionada");
-        bordeMesaCinco.getStyleClass().remove("mesaSeleccionada");
-
-        switch (mesaSeleccion) {
-            case 0:
-                bordeMesaUno.getStyleClass().add("mesaSeleccionada");
-                break;
-            case 1:
-                bordeMesaDos.getStyleClass().add("mesaSeleccionada");
-                break;
-            case 2:
-                bordeMesaTres.getStyleClass().add("mesaSeleccionada");
-                break;
-            case 3:
-                bordeMesaCuatro.getStyleClass().add("mesaSeleccionada");
-                break;
-            case 4:
-                bordeMesaCinco.getStyleClass().add("mesaSeleccionada");
-                break;
-
-        }
-
-        mesaSeleccionada = listaMesas.get(mesaSeleccion);
     }
 
     @Override

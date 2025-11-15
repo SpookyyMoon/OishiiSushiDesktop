@@ -11,8 +11,26 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.oishiisushidesktop.HelloController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.oishiisushidesktop.HelloController">
    <children>
+      <Pane fx:id="panelOscurecer" layoutX="-22.0" layoutY="-26.0" prefHeight="1124.0" prefWidth="1958.0" styleClass="oscurecer" stylesheets="@style.css" visible="false" />
+      <Pane fx:id="panelComanda" layoutX="430.0" layoutY="196.0" prefHeight="724.0" prefWidth="1144.0" styleClass="panelComanda" stylesheets="@style.css" visible="false">
+         <children>
+            <ImageView fx:id="botonCerrarComanda" fitHeight="43.0" fitWidth="70.0" layoutX="1077.0" layoutY="22.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@raw/boton_cerrar.png" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="CLOSED_HAND" />
+               </cursor>
+            </ImageView>
+            <Text layoutX="505.0" layoutY="126.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Mesa 5" textAlignment="CENTER" wrappingWidth="153.5">
+               <font>
+                  <Font name="Poppins Regular" size="34.0" />
+               </font>
+            </Text>
+         </children>
+      </Pane>
       <Pane layoutX="378.0" prefHeight="1090.0" prefWidth="1550.0">
          <children>
             <Line endX="-161.0" endY="795.6666259765625" layoutX="161.0" layoutY="285.0" startX="-161.0" startY="-285.0" stroke="#0000001c" strokeWidth="2.0" />
@@ -84,7 +102,7 @@
             <Circle fill="#ff6f6f" layoutX="605.0" layoutY="106.0" radius="9.0" stroke="TRANSPARENT" strokeType="INSIDE" />
             <Circle fill="#ffa66f" layoutX="857.0" layoutY="105.0" radius="9.0" stroke="TRANSPARENT" strokeType="INSIDE" />
             <Circle fill="#6b6b6b" layoutX="1111.0" layoutY="106.0" radius="9.0" stroke="TRANSPARENT" strokeType="INSIDE" />
-            <Text fill="#fcfcfc" layoutX="795.0" layoutY="316.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1">
+            <Text fill="#fcfcfc" layoutX="800.0" layoutY="316.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1">
                <font>
                   <Font name="Poppins Regular" size="46.0" />
                </font>
@@ -99,12 +117,12 @@
                   <Font name="Poppins Regular" size="46.0" />
                </font>
             </Text>
-            <Text fill="#fcfcfc" layoutX="437.0" layoutY="600.0" strokeType="OUTSIDE" strokeWidth="0.0" text="4">
+            <Text fill="#fcfcfc" layoutX="435.0" layoutY="597.0" strokeType="OUTSIDE" strokeWidth="0.0" text="4">
                <font>
                   <Font name="Poppins Regular" size="46.0" />
                </font>
             </Text>
-            <Text fill="#fcfcfc" layoutX="1140.0" layoutY="600.0" strokeType="OUTSIDE" strokeWidth="0.0" text="5">
+            <Text fill="#fcfcfc" layoutX="1137.0" layoutY="597.0" strokeType="OUTSIDE" strokeWidth="0.0" text="5">
                <font>
                   <Font name="Poppins Regular" size="46.0" />
                </font>
@@ -143,7 +161,7 @@
             <Cursor fx:constant="CLOSED_HAND" />
          </cursor>
       </Button>
-      <Button fx:id="botonVerComanda" layoutX="72.0" layoutY="539.0" mnemonicParsing="false" prefHeight="76.0" prefWidth="227.0" styleClass="botonLateral" stylesheets="@style.css" text="Ver Comanda">
+      <Button fx:id="botonVerComanda" layoutX="72.0" layoutY="539.0" mnemonicParsing="false" onAction="#verComandaMesa" prefHeight="76.0" prefWidth="227.0" styleClass="botonLateral" stylesheets="@style.css" text="Ver Comanda">
          <font>
             <Font size="18.0" />
          </font>
