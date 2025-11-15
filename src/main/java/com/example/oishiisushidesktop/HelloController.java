@@ -4,12 +4,16 @@ import com.example.oishiisushidesktop.adaptadores.ApiAdapter;
 import com.example.oishiisushidesktop.entidades.Comandas;
 import com.example.oishiisushidesktop.entidades.Mesas;
 import com.example.oishiisushidesktop.entidades.Platos;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.util.Duration;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -26,6 +30,8 @@ public class HelloController implements Initializable, Callback<List<Mesas>> {
     Pane bordeMesaUno, bordeMesaDos, bordeMesaTres, bordeMesaCuatro, bordeMesaCinco, panelOscurecer, panelComanda, alertaMesaServida;
     @FXML
     VBox comandasContenedor;
+    @FXML
+    Text numeroMesaComandas;
 
     List<Mesas> listaMesas;
     Mesas mesaSeleccionada;
@@ -35,6 +41,14 @@ public class HelloController implements Initializable, Callback<List<Mesas>> {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         Call<List<Mesas>> call = ApiAdapter.getApiService().getMesas();
         call.enqueue(this);
+
+        Timeline timeline = new Timeline(
+                new KeyFrame(Duration.seconds(2), e -> {
+                    recargarDB();
+                })
+        );
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.play();
 
         botonCerrarAlertaMesaServida.setOnMouseClicked(mouseEvent -> {
             panelOscurecer.setVisible(false);
@@ -80,15 +94,16 @@ public class HelloController implements Initializable, Callback<List<Mesas>> {
         }
     }
 
-    private void mostrarComandasMesa(Mesas mesa) {
+    public void mostrarComandasMesa(Mesas mesa) {
+        numeroMesaComandas.setText("Mesa " + mesa.numeroMesa);
         comandasContenedor.getChildren().clear();
 
         for (Comandas c : listaComandas) {
             if (c.numeroMesa == mesa.numeroMesa && !c.atendidaComanda) {
-                for(Platos platos : c.pedidoPlatos) {
-                    Text textoComanda = new Text(platos.nombrePlato);
-                    textoComanda.setStyle("-fx-font-size: 18; -fx-fill: white;");
-                    comandasContenedor.getChildren().add(textoComanda);
+                for (Platos p : c.pedidoPlatos) {
+                    Text t = new Text(p.nombrePlato);
+                    t.setStyle("-fx-font-size: 22; -fx-fill: black;");
+                    comandasContenedor.getChildren().add(t);
                 }
             }
         }
@@ -169,7 +184,7 @@ public class HelloController implements Initializable, Callback<List<Mesas>> {
         mesaSeleccionada = listaMesas.get(mesaSeleccion);
     }
 
-    private void marcarComoServida(Mesas mesa) {
+    public void marcarComoServida(Mesas mesa) {
         Image mesaServidaImagen = new Image(
                 getClass().getResourceAsStream("/com/example/oishiisushidesktop/raw/mesaServida.png")
         );
@@ -210,7 +225,7 @@ public class HelloController implements Initializable, Callback<List<Mesas>> {
         }
     }
 
-    private void comprobarComandaPendiente(Mesas mesa) {
+    public void comprobarComandaPendiente(Mesas mesa) {
         ApiAdapter.getApiService().getComandas().enqueue(new Callback<List<Comandas>>() {
             @Override
             public void onResponse(Call<List<Comandas>> call, Response<List<Comandas>> response) {
@@ -238,9 +253,50 @@ public class HelloController implements Initializable, Callback<List<Mesas>> {
         });
     }
 
-    private void mostrarAlertaSinPedidos() {
+    public void mostrarAlertaSinPedidos() {
         panelOscurecer.setVisible(true);
         alertaMesaServida.setVisible(true);
+    }
+
+    public void recargarDB() {
+        ApiAdapter.getApiService().getMesas().enqueue(new Callback<List<Mesas>>() {
+            @Override
+            public void onResponse(Call<List<Mesas>> call, Response<List<Mesas>> response) {
+                if (response.isSuccessful()) {
+                    listaMesas = response.body();
+
+                    ApiAdapter.getApiService().getComandas().enqueue(new Callback<List<Comandas>>() {
+                        @Override
+                        public void onResponse(Call<List<Comandas>> call, Response<List<Comandas>> responseComandas) {
+                            if (!responseComandas.isSuccessful() || responseComandas.body() == null) return;
+
+                            listaComandas = responseComandas.body();
+
+                            Platform.runLater(() -> {
+                                for (Mesas mesa : listaMesas) {
+                                    if (mesa.ocupadaMesa) {
+                                        boolean pendiente = listaComandas.stream()
+                                                .anyMatch(c -> c.numeroMesa == mesa.numeroMesa && !c.atendidaComanda);
+                                        if (pendiente) marcarMesaPendiente(mesa);
+                                        else marcarMesaOcupada(mesa);
+                                    } else {
+                                        marcarMesaVacia(mesa);
+                                    }
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onFailure(Call<List<Comandas>> call, Throwable t) {
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Mesas>> call, Throwable throwable) {
+            }
+        });
     }
 
     @Override
