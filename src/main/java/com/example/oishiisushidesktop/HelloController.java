@@ -3,17 +3,20 @@ package com.example.oishiisushidesktop;
 import com.example.oishiisushidesktop.adaptadores.ApiAdapter;
 import com.example.oishiisushidesktop.entidades.Comandas;
 import com.example.oishiisushidesktop.entidades.Mesas;
+import com.example.oishiisushidesktop.entidades.Platos;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
+import javafx.scene.text.Text;
 
 
 public class HelloController implements Initializable, Callback<List<Mesas>> {
@@ -21,6 +24,8 @@ public class HelloController implements Initializable, Callback<List<Mesas>> {
     ImageView mesaUno, mesaDos, mesaTres, mesaCuatro, mesaCinco, botonCerrarComanda,botonCerrarAlertaMesaServida;
     @FXML
     Pane bordeMesaUno, bordeMesaDos, bordeMesaTres, bordeMesaCuatro, bordeMesaCinco, panelOscurecer, panelComanda, alertaMesaServida;
+    @FXML
+    VBox comandasContenedor;
 
     List<Mesas> listaMesas;
     Mesas mesaSeleccionada;
@@ -49,6 +54,7 @@ public class HelloController implements Initializable, Callback<List<Mesas>> {
     @FXML public void verComandaMesa() {
         panelOscurecer.setVisible(true);
         panelComanda.setVisible(true);
+        mostrarComandasMesa(mesaSeleccionada);
     }
 
     public void marcarMesaVacia(Mesas mesa) {
@@ -71,6 +77,20 @@ public class HelloController implements Initializable, Callback<List<Mesas>> {
                 break;
             default:
                 break;
+        }
+    }
+
+    private void mostrarComandasMesa(Mesas mesa) {
+        comandasContenedor.getChildren().clear();
+
+        for (Comandas c : listaComandas) {
+            if (c.numeroMesa == mesa.numeroMesa && !c.atendidaComanda) {
+                for(Platos platos : c.pedidoPlatos) {
+                    Text textoComanda = new Text(platos.nombrePlato);
+                    textoComanda.setStyle("-fx-font-size: 18; -fx-fill: white;");
+                    comandasContenedor.getChildren().add(textoComanda);
+                }
+            }
         }
     }
 
@@ -171,6 +191,22 @@ public class HelloController implements Initializable, Callback<List<Mesas>> {
             case 5:
                 mesaCinco.setImage(mesaServidaImagen);
                 break;
+        }
+
+        for (Comandas comanda : listaComandas) {
+            if (comanda.numeroMesa == mesa.numeroMesa && !comanda.atendidaComanda) {
+                comanda.atendidaComanda = true;
+
+                ApiAdapter.getApiService().updateComandas(mesa.numeroMesa, comanda).enqueue(new Callback<Comandas>() {
+                    @Override
+                    public void onResponse(Call<Comandas> call, Response<Comandas> response) {
+                    }
+
+                    @Override
+                    public void onFailure(Call<Comandas> call, Throwable t) {
+                    }
+                });
+            }
         }
     }
 
