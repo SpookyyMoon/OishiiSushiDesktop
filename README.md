@@ -48,11 +48,11 @@ Ambas aplicaciones (móvil y escritorio) están conectadas mediante una **API RE
 
 ## Video de demostración (Interacción entre APP móvil y escritorio)
 
-[Ver video de demostración](https://github.com/SpookyyMoon/OishiiSushi/blob/master/OishiiSushiDemo.mp4)
+[Ver video de demostración](https://github.com/SpookyyMoon/OishiSushi/blob/master/OishiiSushiDemo.mp4) 
 
 ---
 
 ## Documentación en PDF (Latex)
 
-[Ver documentación en PDF](https://github.com/SpookyyMoon/OishiiSushi/blob/master/docu.pdf)
+[Ver documentación en PDF](https://github.com/SpookyyMoon/OishiSushi/blob/master/docu.pdf)
 
