@@ -21,8 +21,8 @@ public interface ApiService {
     @PUT("mesas/{numeroMesa}")
     Call<Mesas> updateMesas(@Path("numeroMesa") int numeroMesa, @Body Mesas mesa);
 
-    @PUT("comandas/{numeroMesa}")
-    Call<Comandas> updateComandas(@Path("numeroMesa") int numeroMesa, @Body Comandas comanda);
+    @PUT("comandas/{id}")
+    Call<Comandas> updateComandas(@Path("id") String id, @Body Comandas comanda);
 
     @POST("comandas")
     Call<Comandas> createComandas(@Body Comandas comanda);

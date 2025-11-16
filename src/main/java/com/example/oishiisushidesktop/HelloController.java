@@ -212,7 +212,7 @@ public class HelloController implements Initializable, Callback<List<Mesas>> {
             if (comanda.numeroMesa == mesa.numeroMesa && !comanda.atendidaComanda) {
                 comanda.atendidaComanda = true;
 
-                ApiAdapter.getApiService().updateComandas(mesa.numeroMesa, comanda).enqueue(new Callback<Comandas>() {
+                ApiAdapter.getApiService().updateComandas(comanda._id, comanda).enqueue(new Callback<Comandas>() {
                     @Override
                     public void onResponse(Call<Comandas> call, Response<Comandas> response) {
                     }
