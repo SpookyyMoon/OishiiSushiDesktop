@@ -25,6 +25,12 @@ Ambas aplicaciones (móvil y escritorio) están conectadas mediante una **API RE
 
 ---
 
+## Diseño en figma:
+
+https://www.figma.com/design/9dLPDXMIL2y7yJOScwnj3y/OishiSushi?node-id=0-1&t=E6AiOLfoNC8NQhxM-1
+
+---
+
 ## Tecnologías utilizadas
 
 - **Lenguaje principal:** Java  
